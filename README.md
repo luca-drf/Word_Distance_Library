@@ -20,7 +20,7 @@ text file occupied by the keyword.
 The text file is parsed in one passage from begin to end and therefore the
 lists in the hash table are incrementally built thus the numbers are ordered.
 
-Then when the distance() method is called with two words, the algorithm will 
+Then when the `distance()` method is called with two words, the algorithm will 
 find the minimum distance between the two words in linear time over the length
 of the lists (worst case: the longest list of the two returned by the hash
 table).
@@ -30,13 +30,13 @@ might suffer from heavy overhead depending how hash tables are updated
 internally), however, the dictionary have to be created only once per 
 file, then it can be stored or cached removing the indexing overhead.
 
-In the indexes.py three classes are implemented, an interface (Index) and two
+In the `indexes.py` three classes are implemented, an interface (Index) and two
 concrete classes (CaseSenIndex and CaseInsIndex) providing respectively a case
 sensitive behavior and a case insensitive behavior. (Strategy Pattern)
 
-The other three files are a set of unit tests (test_indexes.py), an command
-line tool to use the distance function (word_distance.py) and a text file
-containing The Bible for testing purpose (pg30.txt).
+The other three files are a set of unit tests (`test_indexes.py`), an command
+line tool to use the distance function (`word_distance.py`) and a text file
+containing The Bible for testing purpose (`pg30.txt`).
 
 Requirements
 ------------
