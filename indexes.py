@@ -3,6 +3,7 @@ Indexes module. Contains the definitions of all classes used to index text
 files (books).
 """
 import re
+import collections
 
 
 class Index(object):
@@ -26,17 +27,19 @@ class Index(object):
             raise ValueError('Invalid word(s) given')
         if w1 == w2:
             raise ValueError('Words are the same')
-        try:
-            lst1 = self.indexdict[w1]
-            lst2 = self.indexdict[w2]
-        except KeyError as e:
-            raise ValueError('Word {} is not in the index'.format(str(e)))
+        if w1 not in self.indexdict:
+            raise ValueError('Word {} is not in the index'.format(w1))
+        if w2 not in self.indexdict:
+            raise ValueError('Word {} is not in the index'.format(w2))
 
         # This loop finds the minimum distance of numbers present in the
         # ordered list lst1 and lst2 in linear time over the length of the list.
         i1 = 0
         i2 = 0
-        mindist = self.indexdict[''][1]
+        lst1 = self.indexdict[w1]
+        lst2 = self.indexdict[w2]
+
+        mindist = self.word_n
         while i1 < len(lst1) and i2 < len(lst2):
             dist = abs(lst1[i1] - lst2[i2]) - 1
       
@@ -52,58 +55,50 @@ class Index(object):
         """
         Returns the number of different words.
         """
-        return len(self.indexdict) - 1
+        return len(self.indexdict)
 
     def total_word_count(self):
         """
         Return the total number of words in the source text file.
         """
-        if self.indexdict[''] != [0]:
-            return self.indexdict[''][1] - 1
-        else:
-            return 0
-
+        return self.word_n
 
 class CaseSenIndex(Index):
     def __init__(self, filepath):
-        self.indexdict = self._create_index(filepath)
+        self.indexdict, self.word_n = self._create_index(filepath)
 
-    def _create_index(self, filepath):
-        wordcounter = 0
-        wordpos = {}
+    def _create_index(self, filepath):        
         # The file is readed and the position of each word is stored in a
         # dictionary such that key: word, value: list of all the positions of
         # that word in the source text file.
+        word_n = 0
+        indexdict = collections.defaultdict(list)
         with open(filepath, 'r') as f:
             for word in re.split('\W+', f.read()):
-                if word in wordpos:
-                    wordpos[word].append(wordcounter)
-                else:
-                    wordpos.update({word: [wordcounter]})
-                wordcounter += 1                
-        return wordpos
+                if word != '':
+                    word_n += 1
+                    indexdict[word].append(word_n)                
+        return indexdict, word_n
 
 
 class CaseInsIndex(Index):
     def __init__(self, filepath):
-        self.indexdict = self._create_index(filepath)
+        self.indexdict, self.word_n = self._create_index(filepath)
 
     def _create_index(self, filepath):
         # The file is readed and the position of each word is stored in a
         # dictionary such that key: word (forced lowercase), value: list of all
         # the positions of that word in the source text file (the case is
         # ignored).
-        wordcounter = 0
-        wordpos = {}
+        word_n = 0
+        indexdict = collections.defaultdict(list)
         with open(filepath, 'r') as f:
             for word in re.split('\W+', f.read()):
-                word = word.lower()
-                if word in wordpos:
-                    wordpos[word].append(wordcounter)
-                else:
-                    wordpos.update({word: [wordcounter]})
-                wordcounter += 1                
-        return wordpos
+                if word != '':
+                    word_n += 1
+                    word = word.lower()
+                    indexdict[word].append(word_n)
+        return indexdict, word_n
 
     def distance(self, w1, w2):
         """
