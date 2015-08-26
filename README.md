@@ -73,4 +73,4 @@ The `-h` options will display the help:
 
 Author
 ------
-Copyright (C) 2015 Luca Da Rin Fioretto <radome@gmail.com>
+Copyright (C) 2015 Luca Da Rin Fioretto
