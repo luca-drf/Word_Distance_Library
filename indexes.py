@@ -23,6 +23,9 @@ class Index(object):
         return indexdict, word_n 
         
     def _process_word(self, word):
+        """ Method to specify a word processor called before inserting a word
+        in the index and before querying the index. This method is ment to be
+        overrided in derived classes that needs a different word processing."""
         return word
 
     def distance(self, w1, w2):
