@@ -22,10 +22,11 @@ if __name__=='__main__':
 
     filepath = args.file
     try:
-        if args.C:
-            i = CaseSenIndex(filepath)
-        else:
-            i = CaseInsIndex(filepath)
+        with open(filepath, 'r') as f:
+            if args.C:
+                i = CaseSenIndex(f)
+            else:
+                i = CaseInsIndex(f)
         print (i.distance(args.first_word, args.second_word))
     except IOError as e:
         print (str(e))
